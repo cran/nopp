@@ -1,0 +1,4 @@
+%\VignetteIndexEntry{nopp user manual}
+\documentclass{article}
+\begin{document}
+\end{document}

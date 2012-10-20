@@ -1,0 +1,3 @@
+export("equilibrium","noppNews")
+S3method(plot, nash.eq)
+S3method(print, nash.eq)
