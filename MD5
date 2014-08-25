@@ -1,5 +1,5 @@
-dd88a652beb7013d619d7ec435166cac *DESCRIPTION
-a3fd454e00e3536527eb835073dc062c *NAMESPACE
+9ba7659736aab2326db45eada8008906 *DESCRIPTION
+fe5f063996d6f9a863dc2e767550a3f1 *NAMESPACE
 5a7b275dbaa2cf37805819f01ef9519d *R/equilibrium.R
 245a2b8024b6b2b3298acdfc9b651d5a *R/noppNews.R
 337e4a135abbc46e449569fa3e647810 *R/plot.nash.eq.R
@@ -8,10 +8,9 @@ a3fd454e00e3536527eb835073dc062c *NAMESPACE
 824793ea3f305cdf7a592e551b25e4a0 *data/italy2006.lin.rda
 f928455f1cd503737e1c21d38d0ead1f *data/italy2006.rda
 018dd9226d6d8f91196f841a43e0f496 *data/italy2006.wide.rda
-1d80a712ec2d5bc4da27588d29e4a068 *inst/NEWS
-0ddefbe64b20732747a0380b40fbeb42 *inst/doc/nopp.Rnw
+f0356c68989bba33a3a9e4d7bfc78016 *inst/NEWS
 622b0fdafb7e3f85e94d39f2d1e34ff9 *inst/doc/nopp.pdf
-3acbf88dc2bec8269d40f2f8030133f6 *man/equilibrium.Rd
+18592f71fd641fea9f7c6837b658ceb7 *man/equilibrium.Rd
 b6af5657257691637160372beaf7719c *man/italy2006.Rd
 4c84f2509a072d5c207dce737a1b3eba *man/italy2006.lin.Rd
 84482466d4e29b2cc09c35e3da0e0561 *man/italy2006.wide.Rd

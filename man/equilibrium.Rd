@@ -7,8 +7,10 @@ Nash Optimal Party Positions
 Nash Optimal Party Positions
 }
 \usage{
-equilibrium(start, model, data, tolerance = 1e-05, max.iter = 100, coal = 0, alpha = 0, margin = NULL, fixed = NULL, gamma = 0, boot = 0, MC = 0, self.var = "self", 
-    prox.var="prox", position=NULL, votes=NULL, quadratic=TRUE)
+equilibrium(start, model, data, tolerance = 1e-05, max.iter = 100, 
+coal = 0, alpha = 0, margin = NULL, fixed = NULL, gamma = 0, 
+boot = 0, MC = 0, self.var = "self", prox.var="prox", 
+position=NULL, votes=NULL, quadratic=TRUE)
 }
 \arguments{
   \item{start}{initial party positions. Numerical vector. Optional.}
@@ -57,16 +59,19 @@ data(italy2006)
 str(italy2006)
 italy2006[1:2,1:14]
 
-election <- mlogit.data(italy2006 , shape="wide", choice="vote", varying=c(5:14), sep="_")
+election <- mlogit.data(italy2006 , shape="wide", choice="vote", 
+varying=c(5:14), sep="_")
 str(election)
 
-m <- mlogit(vote~prox+partyID | gov_perf+sex+age+education, election, reflevel = "UL")
+m <- mlogit(vote~prox+partyID | gov_perf+sex+age+education, 
+election, reflevel = "UL")
 summary(m)
 
 true.pos <- list(FI=7.59, UL=3.50, RC=1.95, AN=8.08, UDC=5.66)
 true.votes <- list(FI=.24, UL=.40, RC=.10, AN=.18, UDC=.08)
 # model 1: comparison against true votes and party positions
-nash.eq <- equilibrium(model=m, data=election, pos=true.pos, votes=true.votes)
+nash.eq <- equilibrium(model=m, data=election, pos=true.pos, 
+ votes=true.votes)
 nash.eq
 
 par(mfrow=c(3,1))
@@ -76,13 +81,15 @@ par(mfrow=c(1,1))
 # model 2: colation behaviours
 coal1 <- list(FI=1, UL=2, RC=2, AN=1, UDC=1)
 alpha1 <- list(FI=0.5, UL=0.5, RC=0.5, AN=0.5, UDC=0.5)
-nash.eq <- equilibrium(model=m, data=election, coal=coal1, alpha=alpha1)
+nash.eq <- equilibrium(model=m, data=election, coal=coal1, 
+ alpha=alpha1)
 nash.eq
 
 # model 3: colation behaviours
 coal1 <- list(FI=1, UL=2, RC=2, AN=1, UDC=1)
 alpha1 <- list(FI=0.7, UL=0.8, RC=0.1, AN=0.5, UDC=0.9)
-nash.eq <- equilibrium(model=m, data=election, coal=coal1, alpha=alpha1)
+nash.eq <- equilibrium(model=m, data=election, coal=coal1, 
+ alpha=alpha1)
 nash.eq
 
 # model 4: rivals tends to separate each other
@@ -93,14 +100,18 @@ nash.eq
 nash.eq <- equilibrium(model=m, data=election, fixed=list(RC=1), gamma=0.2)
 nash.eq
 
-# model 6: rivals tends to separate each other with fixed position averaged with Nash equilibrium solution
-nash.eq <- equilibrium(model=m, data=election,  margin=list(FI="UL", UL="FI"), fixed=list(RC=1), gamma=0.2)
+# model 6: rivals tends to separate each other with 
+# fixed position averaged with Nash equilibrium solution
+nash.eq <- equilibrium(model=m, data=election,  
+margin=list(FI="UL", UL="FI"), fixed=list(RC=1), gamma=0.2)
 nash.eq
 
-# model 7: coalition and fixed position averaged with Nash equilibrium solution
+# model 7: coalition and fixed position averaged with 
+# Nash equilibrium solution
 coal1 <- list(FI=1, UL=2, RC=2, AN=1, UDC=1)
 alpha1 <- list(FI=0.7, UL=0.8, RC=0.5, AN=0.5, UDC=0.5)
-nash.eq <- equilibrium(model=m, data=election,  coal=coal1, alpha=alpha1, fixed=list(RC=1), gamma=0.2)
+nash.eq <- equilibrium(model=m, data=election,  coal=coal1, 
+ alpha=alpha1, fixed=list(RC=1), gamma=0.2)
 nash.eq
 
 # model 8: Bootstrap analysis
