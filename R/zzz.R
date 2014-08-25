@@ -3,5 +3,4 @@
                       fields="Version")
     packageStartupMessage(paste(pkgname, NOPPver))
     packageStartupMessage("Type noppNews() to see new features/changes/bug fixes.")
-    packageStartupMessage('Type vignette("nopp") to read the vignette')
 }

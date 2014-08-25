@@ -2,4 +2,8 @@ export("equilibrium","noppNews")
 S3method(plot, nash.eq)
 S3method(print, nash.eq)
 importFrom("mlogit",mlogit,mlogit.data)
+importFrom("grDevices", "rainbow")
+importFrom("graphics", "abline", "dotchart", "mtext", "plot", "polygon", "text")
+importFrom("stats", "cor", "predict", "rnorm", "sd")
+importFrom("utils", "setTxtProgressBar", "txtProgressBar")
 
