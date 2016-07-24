@@ -10,7 +10,7 @@ Nash Optimal Party Positions
 equilibrium(start, model, data, tolerance = 1e-05, max.iter = 100, 
 coal = 0, alpha = 0, margin = NULL, fixed = NULL, gamma = 0, 
 boot = 0, MC = 0, self.var = "self", prox.var="prox", 
-position=NULL, votes=NULL, quadratic=TRUE)
+position=NULL, votes=NULL, quadratic=TRUE, conf.level = 0.95)
 }
 \arguments{
   \item{start}{initial party positions. Numerical vector. Optional.}
@@ -30,6 +30,7 @@ position=NULL, votes=NULL, quadratic=TRUE)
   \item{position}{a named \code{list}: of perceived position of parties. See Details.}
   \item{votes}{a named \code{list}: of actual vote share at election. See Details.}
   \item{quadratic}{a logical value: if  \code{FALSE} the linear utility function is used to calculate the proximity. See Details.}
+  \item{conf.level}{significant level for empirical Monte Carlo or bootstrap confidence intervals.}
 }
 \details{
 See vignette.
@@ -59,7 +60,7 @@ data(italy2006)
 str(italy2006)
 italy2006[1:2,1:14]
 
-election <- mlogit.data(italy2006 , shape="wide", choice="vote", 
+election <- set.data(italy2006 , shape="wide", choice="vote",
 varying=c(5:14), sep="_")
 str(election)
 
@@ -115,10 +116,12 @@ nash.eq <- equilibrium(model=m, data=election,  coal=coal1,
 nash.eq
 
 # model 8: Bootstrap analysis
+set.seed(280715)
 nash.eq <- equilibrium(model=m, data=election, boot=10)
 nash.eq
 
 # model 9: Monte Carlo simulation
+set.seed(280715)
 nash.eq <- equilibrium(model=m, data=election, MC=10)
 nash.eq
 }

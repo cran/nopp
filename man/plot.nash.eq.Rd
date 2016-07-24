@@ -25,7 +25,7 @@ See Also as \code{\link{equilibrium}}
 \examples{
 \dontrun{
 data(italy2006)
-election <- mlogit.data(italy2006 , shape="wide", choice="vote", varying=c(5:14), sep="_")
+election <- set.data(italy2006 , shape="wide", choice="vote", varying=c(5:14), sep="_")
 m <- mlogit(vote~prox+partyID | gov_perf+sex+age+education, election, reflevel = "UL")
 
 true.pos <- list(FI=7.59, UL=3.50, RC=1.95, AN=8.08, UDC=5.66)

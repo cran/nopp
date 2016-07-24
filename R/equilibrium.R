@@ -1,4 +1,145 @@
+
 equilibrium <-
+function(start, model, data, tolerance=1e-5, max.iter=100, coal=0, alpha=0,
+margin=NULL, fixed=NULL, gamma=0, boot=0, MC=0,self.var="self", prox.var="prox", position=NULL, votes=NULL,quadratic=TRUE, conf.level = 0.95){
+    ccc <- match.call()
+    continue <- TRUE
+    iter <- 0
+    tmp <- NULL
+    k <- length(unique(data$alt))
+    if(missing(start))
+    start <- sample(data[,self.var], k)
+    tmp <- start
+    
+    basic <- equilibrium.internal(start=start, model=model, data=data, tolerance=tolerance, max.iter=max.iter, coal=coal, alpha=alpha,margin=margin, fixed=fixed, gamma=gamma,
+    self.var=self.var, prox.var=prox.var,quadratic=quadratic)
+    bootstrap <- NULL
+    montecarlo <- NULL
+    
+    est <- NULL
+    mP <- NULL
+    
+    new.call1 <- as.list(attr(data,"call")) # needed for mlogit.data
+    new.call1[[1]] <- NULL
+    backup.data <- eval(new.call1$data)
+    
+    new.call2 <- model$call
+    new.call2[[1]] <- NULL
+    
+    chid <- rownames(backup.data)
+    nvoters <- length(chid)
+    
+    
+    if(boot>0){
+        cat("\nBootstrapping \n\n")
+        n.sim <- boot
+        est <- matrix(,n.sim, k)
+        mP <- matrix(,n.sim, k)
+        pb <- txtProgressBar(min=1, max=n.sim, style=3)
+        for(sim in 1:n.sim){
+            
+            newchid <- sample(chid, nvoters, replace=TRUE)
+            #            iidd <- match(data$chid, newchid)
+            # iidd <- which(!is.na(iidd))
+            # new.election <- data[iidd,]
+            tmp.data <- backup.data[newchid,]
+            rownames(tmp.data) <- NULL
+            mycall <- new.call1
+            mycall$data <- as.symbol("tmp.data")
+            new.election <- do.call("set.data", mycall)
+
+            mymodelcall <- new.call2
+            mymodelcall$data <- as.symbol("new.election")
+            mymodelcall <- as.list(mymodelcall)
+            new.model <- do.call("mlogit", mymodelcall)
+
+            ans <- try(equilibrium.internal(start=start, model=new.model, data=new.election, tolerance=tolerance, max.iter=max.iter, coal=coal, alpha=alpha, margin=margin, fixed=fixed, gamma=gamma,self.var=self.var, prox.var=prox.var,quadratic=quadratic), "TRUE")
+            if(class(ans)=="try-error")
+             next()
+            #   cat("o")
+            est[sim,] <- ans$est
+            mP[sim,] <- ans$mP
+            setTxtProgressBar(pb, sim)
+            #     print(ans)
+        }
+        close(pb)
+        
+        est.mean <- apply(est,2,mean)
+        est.LB <- apply(est,2,function(x) quantile(x,(1-conf.level)/2))
+        est.UB <- apply(est,2,function(x) quantile(x,1-(1-conf.level)/2))
+        names(est.mean) <- names(ans$est)
+        names(est.LB) <- names(ans$est)
+        names(est.UB) <- names(ans$est)
+        
+        mP.mean <- apply(mP,2,mean)
+        mP.LB <- apply(mP,2,function(x) quantile(x,(1-conf.level)/2))
+        mP.UB <- apply(mP,2,function(x) quantile(x,1-(1-conf.level)/2))
+        names(mP.mean) <- names(ans$mP)
+        names(mP.LB) <- names(ans$mP)
+        names(mP.UB) <- names(ans$mP)
+        
+        bootstrap <-  list(est=est, mP=mP, est.mean=est.mean,  est.LB=est.LB, est.UB=est.UB, mP.mean=mP.mean, mP.LB=mP.LB, mP.UB=mP.UB, replications=boot, conf.level = conf.level)
+        
+        cat("\n")
+    }
+    
+    
+    
+    if(MC>0){
+        cat("\nDoing Monte Carlo \n\n")
+        n.sim <- MC
+        est <- matrix(,n.sim, k)
+        mP <- matrix(,n.sim, k)
+        
+        IC <- summary(model)$CoefTable
+        pb <- txtProgressBar(min=1, max=n.sim, style=3)
+        
+        for(sim in 1:n.sim){
+            
+            #newpar <- apply(IC, 1, function(x) rnorm(1, x[1],x[2]))
+            newpar <- mvrnorm(1, coef(model), vcov(model))
+            
+            idx <- match(names(newpar), names(model$coefficients))
+            mod1 <- model
+            mod1$coefficients[idx] <- newpar
+            ans <- try(equilibrium.internal(start=start, model=mod1, data=data, tolerance=tolerance, max.iter=max.iter, coal=coal, alpha=alpha, margin=margin, fixed=fixed, gamma=gamma,
+            self.var=self.var, prox.var=prox.var,quadratic=quadratic),"TRUE")
+            if(class(ans)=="try-error")
+             next()
+            #         cat("o")
+            est[sim,] <- ans$est
+            mP[sim,] <- ans$mP
+            setTxtProgressBar(pb, sim)
+        }
+        close(pb)
+        
+        est.mean <- apply(est,2,mean)
+        est.LB <- apply(est,2,function(x) quantile(x,(1-conf.level)/2))
+        est.UB <- apply(est,2,function(x) quantile(x,1-(1-conf.level)/2))
+        
+        names(est.mean) <- names(ans$est)
+        names(est.LB) <- names(ans$est)
+        names(est.UB) <- names(ans$est)
+        
+        mP.mean <- apply(mP,2,mean)
+        mP.LB <- apply(mP,2,function(x) quantile(x,(1-conf.level)/2))
+        mP.UB <- apply(mP,2,function(x) quantile(x,1-(1-conf.level)/2))
+        
+        names(mP.mean) <- names(ans$mP)
+        names(mP.LB) <- names(ans$mP)
+        names(mP.UB) <- names(ans$mP)
+
+        montecarlo <-  list(est=est, mP=mP, est.mean=est.mean, est.LB=est.LB, est.UB=est.UB, mP.mean=mP.mean, mP.LB=mP.LB, mP.UB=mP.UB, replications=MC, conf.level = conf.level)
+        cat("\n")
+    }
+    
+    obj <- list(basic=basic, MC=montecarlo,boot=bootstrap, position=position, votes=votes, call=ccc)
+    class(obj) <- "nash.eq"
+    obj
+}
+
+
+equilibrium.old <-
 function(start, model, data, tolerance=1e-5, max.iter=100, coal=0, alpha=0, 
 margin=NULL, fixed=NULL, gamma=0, boot=0, MC=0,self.var="self", prox.var="prox", position=NULL, votes=NULL,quadratic=TRUE){
     ccc <- match.call()
