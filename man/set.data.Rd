@@ -24,6 +24,9 @@ For general examples see the vignette. The arguments \code{shape}, \code{choice}
 \author{
 Luigi Curini, Stefano M. Iacus
 }
+\references{
+Curini, L., and Iacus, S.M. (2017) Nash Optimal Party Positions: The nopp R Package, Journal of Statistical Software, 81(11), 1--25
+}
 \note{
 See the vignette for detailed explanations and other working examples.
 }

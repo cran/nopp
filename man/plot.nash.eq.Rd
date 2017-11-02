@@ -22,6 +22,9 @@ Luigi Curini, Stefano M. Iacus
 \seealso{
 See Also as \code{\link{equilibrium}}
 }
+\references{
+Curini, L., and Iacus, S.M. (2017) Nash Optimal Party Positions: The nopp R Package, Journal of Statistical Software, 81(11), 1--25
+}
 \examples{
 \dontrun{
 data(italy2006)

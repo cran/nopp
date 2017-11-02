@@ -26,5 +26,7 @@ Maintainer: Luigi Curini <luigi.curini@unimi.it>, Stefano M. Iacus <stefano.iacu
  Adams, James F., Samuel Merrill III, and Bernard Grofman (2005). A Unified Theory of Party Competition. Cambridge: Cambridge University Press
  
  Merrill, Samuel III, and James Adams (2001), Computing Nash Equilibria in Probabilistic, Multiparty Spatial Models with Nonpolicy Components, Political Analysis, 9, 347--61
+
+Curini, L., and Iacus, S.M. (2017) Nash Optimal Party Positions: The nopp R Package, Journal of Statistical Software, 81(11), 1--25
 }
 \keyword{ package }
