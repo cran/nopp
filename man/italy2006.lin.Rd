@@ -48,7 +48,7 @@ In this survey respondents were asked to indicate which party they voted for in 
 \code{gov_perf} : 1 = "very good job", 2 = "good job", 3 = "bad job", 4 = "very bad job"
 }
 \source{
-CSES - Comparative Study of Electoral Systems: \url{http://www.cses.org/}). 
+CSES - Comparative Study of Electoral Systems: \url{https://cses.org/}). 
 }
 \examples{
 data(italy2006.lin)

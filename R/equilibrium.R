@@ -54,7 +54,7 @@ margin=NULL, fixed=NULL, gamma=0, boot=0, MC=0,self.var="self", prox.var="prox",
             new.model <- do.call("mlogit", mymodelcall)
 
             ans <- try(equilibrium.internal(start=start, model=new.model, data=new.election, tolerance=tolerance, max.iter=max.iter, coal=coal, alpha=alpha, margin=margin, fixed=fixed, gamma=gamma,self.var=self.var, prox.var=prox.var,quadratic=quadratic), "TRUE")
-            if(class(ans)=="try-error")
+            if(class(ans)[1]=="try-error")
              next()
             #   cat("o")
             est[sim,] <- ans$est
@@ -104,7 +104,7 @@ margin=NULL, fixed=NULL, gamma=0, boot=0, MC=0,self.var="self", prox.var="prox",
             mod1$coefficients[idx] <- newpar
             ans <- try(equilibrium.internal(start=start, model=mod1, data=data, tolerance=tolerance, max.iter=max.iter, coal=coal, alpha=alpha, margin=margin, fixed=fixed, gamma=gamma,
             self.var=self.var, prox.var=prox.var,quadratic=quadratic),"TRUE")
-            if(class(ans)=="try-error")
+            if(class(ans)[1]=="try-error")
              next()
             #         cat("o")
             est[sim,] <- ans$est

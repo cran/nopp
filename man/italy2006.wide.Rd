@@ -48,7 +48,7 @@ variable from \code{FI} to \code{RC} identify the placement of those parties, on
 
 }
 \source{
-CSES - Comparative Study of Electoral Systems: \url{http://www.cses.org/}). 
+CSES - Comparative Study of Electoral Systems: \url{https://cses.org/}). 
 }
 \examples{
 data(italy2006.wide)
